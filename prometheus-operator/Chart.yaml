@@ -1,0 +1,6 @@
+apiVersion: v2
+name: prometheus-operator
+description: Prometheus operator
+type: application
+version: 0.1.0
+appVersion: "0.77.1"

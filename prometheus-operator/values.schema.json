@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "nameOverride": {
+      "type": "string"
+    },
+    "fullnameOverride": {
+      "type": "string"
+    },
+    "image": {
+      "$ref": "#/$defs/image"
+    },
+    "resources": {
+      "$ref": "#/$defs/resources"
+    },
+    "livenessProbe": {
+      "$ref": "#/$defs/probe"
+    },
+    "readinessProbe": {
+      "$ref": "#/$defs/probe"
+    },
+    "containerSecurityContext": {"type": "object"},
+    "securityContext": {"type": "object"},
+    "nodeSelector": {"type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "configReloader": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "image": {
+          "$ref": "#/$defs/image"
+        },
+        "resources": {
+          "$ref": "#/$defs/resources"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "resources": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "cpu": {
+              "type": [
+                "integer",
+                "string"
+              ]
+            },
+            "memory": {
+              "type": "string"
+            }
+          }
+        },
+        "requests": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "cpu": {
+              "type": [
+                "integer",
+                "string"
+              ]
+            },
+            "memory": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "image": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "repository": {"type":  "string"},
+        "pullPolicy": {"enum": ["IfNotPresent", "Always", "Never"]},
+        "tag": {"type": "string"},
+        "digest": {"type": "string"}
+      }
+    },
+    "probe": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {"type": "boolean"},
+        "failureThreshold": {"type": "integer"},
+        "initialDelaySeconds": {"type": "integer"},
+        "periodSeconds": {"type": "integer"},
+        "successThreshold": {"type": "integer"},
+        "timeoutSeconds": {"type": "integer"}
+      }
+    }
+  }
+}
