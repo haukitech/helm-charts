@@ -1,0 +1,64 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: {{ include "prometheus.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "prometheus.labels" . | nindent 4 }}
+spec:
+  version: {{ printf "v%s" .Chart.AppVersion }}
+  replicas: {{ .Values.replicas }}
+  serviceAccountName: {{ include "prometheus.fullname" . }}
+  {{- with .Values.resources }}
+  resources:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.nodeSelector }}
+  nodeSelector:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.securityContext }}
+  securityContext:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- if .Values.persistence.enabled }}
+  storage:
+    volumeClaimTemplate:
+      spec:
+        resources:
+          requests:
+            storage: {{ .Values.persistence.size }}
+        {{- if .Values.persistence.storageClass }}
+        stoageClassName: {{ .Values.persistence.storageClass }}
+        {{- end }}
+  {{- end }}
+  {{/* Prometheus config */}}
+  {{- if .Values.config.externalUrl }}
+  externalUrl: {{ .Values.config.externalUrl | quote }}
+  {{- end }}
+  {{- if .Values.config.retention }}
+  retention: {{ .Values.config.retention | quote }}
+  {{- end }}
+  {{- if .Values.config.retentionSize }}
+  retentionSize: {{ .Values.config.retentionSize | quote }}
+  {{- end }}
+  podMonitorNamespaceSelector:
+    {{- toYaml .Values.config.podMonitorNamespaceSelector | nindent 4 }}
+  podMonitorSelector:
+    {{- toYaml .Values.config.podMonitorSelector | nindent 4 }}
+  probeNamespaceSelector:
+    {{- toYaml .Values.config.probeNamespaceSelector | nindent 4 }}
+  probeSelector:
+    {{- toYaml .Values.config.probeSelector | nindent 4 }}
+  ruleNamespaceSelector:
+    {{- toYaml .Values.config.ruleNamespaceSelector | nindent 4 }}
+  ruleSelector:
+    {{- toYaml .Values.config.ruleSelector | nindent 4 }}
+  scrapeConfigNamespaceSelector:
+    {{- toYaml .Values.config.scrapeConfigNamespaceSelector | nindent 4 }}
+  scrapeConfigSelector:
+    {{- toYaml .Values.config.scrapeConfigSelector | nindent 4 }}
+  serviceMonitorNamespaceSelector:
+    {{- toYaml .Values.config.serviceMonitorNamespaceSelector | nindent 4 }}
+  serviceMonitorSelector:
+    {{- toYaml .Values.config.serviceMonitorSelector | nindent 4 }}

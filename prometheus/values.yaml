@@ -1,0 +1,52 @@
+nameOverride: ""
+fullnameOverride: ""
+
+replicas: 1
+
+resources: {}
+#  limits:
+#    cpu: 200m
+#    memory: 200Mi
+#  requests:
+#    cpu: 100m
+#    memory: 100Mi
+
+nodeSelector: {}
+#  kubernetes.io/os: linux
+
+securityContext:
+  fsGroup: 2000
+  runAsNonRoot: true
+  runAsUser: 1000
+
+persistence:
+  enabled: false
+  storageClass: ""
+  size: 1Gi
+
+config:
+  externalUrl: ""
+  retention: ""
+  retentionSize: ""
+  podMonitorNamespaceSelector: {}
+  podMonitorSelector: {}
+  probeNamespaceSelector: {}
+  probeSelector: {}
+  ruleNamespaceSelector: {}
+  ruleSelector: {}
+  scrapeConfigNamespaceSelector: {}
+  scrapeConfigSelector: {}
+  serviceMonitorNamespaceSelector: {}
+  serviceMonitorSelector: {}
+
+service:
+  type: ClusterIP
+  ports:
+    web: 9090
+    reloaderWeb: 8080
+  nodePorts:
+    web: null
+    reloaderWeb: null
+
+serviceMonitor:
+  enabled: true
