@@ -21,11 +21,23 @@
     "readinessProbe": {
       "$ref": "#/$defs/probe"
     },
-    "containerSecurityContext": {"type": "object"},
-    "securityContext": {"type": "object"},
-    "nodeSelector": {"type": "object",
+    "containerSecurityContext": {
+      "type": "object"
+    },
+    "securityContext": {
+      "type": "object"
+    },
+    "nodeSelector": {
+      "type": "object",
       "additionalProperties": {
         "type": "string"
+      }
+    },
+    "serviceMonitor": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {"type": "boolean"}
       }
     },
     "configReloader": {
@@ -82,22 +94,46 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "repository": {"type":  "string"},
-        "pullPolicy": {"enum": ["IfNotPresent", "Always", "Never"]},
-        "tag": {"type": "string"},
-        "digest": {"type": "string"}
+        "repository": {
+          "type": "string"
+        },
+        "pullPolicy": {
+          "enum": [
+            "IfNotPresent",
+            "Always",
+            "Never"
+          ]
+        },
+        "tag": {
+          "type": "string"
+        },
+        "digest": {
+          "type": "string"
+        }
       }
     },
     "probe": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "enabled": {"type": "boolean"},
-        "failureThreshold": {"type": "integer"},
-        "initialDelaySeconds": {"type": "integer"},
-        "periodSeconds": {"type": "integer"},
-        "successThreshold": {"type": "integer"},
-        "timeoutSeconds": {"type": "integer"}
+        "enabled": {
+          "type": "boolean"
+        },
+        "failureThreshold": {
+          "type": "integer"
+        },
+        "initialDelaySeconds": {
+          "type": "integer"
+        },
+        "periodSeconds": {
+          "type": "integer"
+        },
+        "successThreshold": {
+          "type": "integer"
+        },
+        "timeoutSeconds": {
+          "type": "integer"
+        }
       }
     }
   }

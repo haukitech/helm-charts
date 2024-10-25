@@ -48,6 +48,9 @@ securityContext:
 nodeSelector: {}
 #  kubernetes.io/os: linux
 
+serviceMonitor:
+  enabled: true
+
 # ---------------------------------------------------------
 # Config reloader
 # ---------------------------------------------------------
