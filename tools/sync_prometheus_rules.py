@@ -29,6 +29,7 @@ VERSION = "v0.14.0"
 BASE_URL = f"https://raw.githubusercontent.com/prometheus-operator/kube-prometheus/{VERSION}/manifests"
 RULES = [
     ("prometheus", "prometheus-prometheusRule.yaml"),
+    ("prometheus-operator", "prometheusOperator-prometheusRule.yaml"),
 ]
 
 HEADER = string.Template("""\

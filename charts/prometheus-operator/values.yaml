@@ -51,6 +51,10 @@ nodeSelector: {}
 serviceMonitor:
   enabled: true
 
+rules:
+  enabled: true
+  disabled: {}
+
 # ---------------------------------------------------------
 # Config reloader
 # ---------------------------------------------------------
