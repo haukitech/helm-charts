@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# Copyright 2024 Hauki Tech sp. z o.o.
+# SPDX-License-Identifier: Apache-2.0
 
 import re
 import string
@@ -33,6 +35,10 @@ RULES = [
 ]
 
 HEADER = string.Template("""\
+# Copyright 2024 Hauki Tech sp. z o.o.
+# SPDX-License-Identifier: Apache-2.0
+# This file is generated based on the source code of the https://github.com/prometheus-operator/kube-prometheus/
+# project, that is licensed under terms of the Apache License 2.0
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
