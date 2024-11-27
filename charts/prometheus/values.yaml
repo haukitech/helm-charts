@@ -50,3 +50,7 @@ service:
 
 serviceMonitor:
   enabled: true
+
+rules:
+  enabled: true
+  disabled: {}
