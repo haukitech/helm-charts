@@ -5,10 +5,10 @@ type: application
 version: 0.1.0
 
 dependencies:
-  - name: prometheus-operator
+  - name: haukitech/prometheus-operator
     version: '*'
     condition: dependencies.prometheusOperator
 
-  - name: prometheus
+  - name: haukitech/prometheus
     version: '*'
     condition: dependencies.prometheus
