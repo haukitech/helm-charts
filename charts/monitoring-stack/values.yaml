@@ -1,0 +1,9 @@
+dependencies:
+  prometheusOperator: true
+  prometheus: true
+
+prometheus-operator:
+  fullnameOverride: prometheus-operator
+
+prometheus:
+  fullnameOverride: prometheus

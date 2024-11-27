@@ -1,0 +1,14 @@
+apiVersion: v2
+name: monitoring-stack
+description: Hauki Tech Monitoring Stack
+type: application
+version: 0.1.0
+
+dependencies:
+  - name: prometheus-operator
+    version: '*'
+    condition: dependencies.prometheusOperator
+
+  - name: prometheus
+    version: '*'
+    condition: dependencies.prometheus
