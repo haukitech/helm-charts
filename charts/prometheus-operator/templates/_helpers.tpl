@@ -34,11 +34,13 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "prometheus-operator.labels" -}}
+helm.sh/chart: {{ include "prometheus-operator.chart" . }}
 {{ include "prometheus-operator.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/component: controller
+app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{/*
