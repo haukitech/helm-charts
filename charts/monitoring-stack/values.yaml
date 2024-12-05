@@ -1,9 +1,13 @@
 dependencies:
   prometheusOperator: true
   prometheus: true
+  alertmanager: true
 
 prometheus-operator:
   fullnameOverride: prometheus-operator
 
 prometheus:
   fullnameOverride: prometheus
+
+alertmanager:
+  fullnameOverride: alertmanager

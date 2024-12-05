@@ -2,7 +2,7 @@ apiVersion: v2
 name: monitoring-stack
 description: Hauki Tech Monitoring Stack
 type: application
-version: 0.1.0
+version: 0.1.1
 
 dependencies:
   - name: prometheus-operator
@@ -14,3 +14,8 @@ dependencies:
     version: '*'
     repository: https://haukitech.github.io/helm-charts/
     condition: dependencies.prometheus
+
+  - name: alertmanager
+    version: '*'
+    repository: https://haukitech.github.io/helm-charts/
+    condition: dependencies.alertmanager

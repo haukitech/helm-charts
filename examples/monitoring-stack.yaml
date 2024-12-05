@@ -1,10 +1,15 @@
-#prometheus-operator:
-#  resources:
-#    limits:
-#      memory: 200Mi
-#    requests:
-#      cpu: 100m
-#      memory: 100Mi
+dependencies:
+  prometheusOperator: true
+  prometheus: true
+  alertmanager: true
+
+prometheus-operator:
+  resources:
+    limits:
+      memory: 200Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
 
 prometheus:
   resources:
@@ -14,10 +19,16 @@ prometheus:
       cpu: 100m
       memory: 100Mi
 
+  alertmanager:
+    enabled: true
+
   persistence:
     enabled: true
 
-  service:
-    type: NodePort
-    nodePorts:
-      web: 32000
+alertmanager:
+  resources:
+    limits:
+      memory: 200Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
