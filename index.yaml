@@ -13,6 +13,28 @@ entries:
     version: 0.1.0
   monitoring-stack:
   - apiVersion: v2
+    created: "2024-12-05T19:42:56.822268339Z"
+    dependencies:
+    - condition: dependencies.prometheusOperator
+      name: prometheus-operator
+      repository: https://haukitech.github.io/helm-charts/
+      version: '*'
+    - condition: dependencies.prometheus
+      name: prometheus
+      repository: https://haukitech.github.io/helm-charts/
+      version: '*'
+    - condition: dependencies.alertmanager
+      name: alertmanager
+      repository: https://haukitech.github.io/helm-charts/
+      version: '*'
+    description: Hauki Tech Monitoring Stack
+    digest: 3c2f688e52ed1ced0405934e1e524457357f4a7b7b34aafcab961c6f39fb50ef
+    name: monitoring-stack
+    type: application
+    urls:
+    - https://github.com/haukitech/helm-charts/releases/download/monitoring-stack-0.1.1/monitoring-stack-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     created: "2024-11-27T20:58:33.383751919Z"
     dependencies:
     - condition: dependencies.prometheusOperator
@@ -72,4 +94,4 @@ entries:
     urls:
     - https://github.com/haukitech/helm-charts/releases/download/prometheus-operator-0.1.0/prometheus-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2024-12-05T19:38:47.850705417Z"
+generated: "2024-12-05T19:42:56.822282816Z"
