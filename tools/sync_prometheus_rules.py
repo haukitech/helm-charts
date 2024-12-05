@@ -11,10 +11,10 @@ import httpx
 import yaml
 from yaml.representer import SafeRepresenter
 
-# TODO: Add notice that rule files are generated based on kube-prometheus project under the Apache 2.0 license.
 
 class LiteralStr(str):
     pass
+
 
 def literal_str_representer(dumper: SafeRepresenter, data):
     node = dumper.represent_str(data)
@@ -25,20 +25,25 @@ def literal_str_representer(dumper: SafeRepresenter, data):
 
 SCRIPT_DIR = Path(__file__).parent
 SOURCE_DIR = SCRIPT_DIR / ".temp"
-CHARTS_DIR = SCRIPT_DIR.parent  / "charts"
+CHARTS_DIR = SCRIPT_DIR.parent / "charts"
 
 VERSION = "v0.14.0"
 BASE_URL = f"https://raw.githubusercontent.com/prometheus-operator/kube-prometheus/{VERSION}/manifests"
+
 RULES = [
+    ("alertmanager", "alertmanager-prometheusRule.yaml"),
     ("prometheus", "prometheus-prometheusRule.yaml"),
     ("prometheus-operator", "prometheusOperator-prometheusRule.yaml"),
 ]
 
-HEADER = string.Template("""\
+COPYRIGHT = """\
 # Copyright 2024 Hauki Tech sp. z o.o.
 # SPDX-License-Identifier: Apache-2.0
 # This file is generated based on the source code of the https://github.com/prometheus-operator/kube-prometheus/
 # project, that is licensed under terms of the Apache License 2.0
+"""
+
+HEADER = string.Template("""\
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
@@ -53,6 +58,12 @@ spec:
 
 def escape_helm(value: str):
     return re.sub(r"(\{\{|\}\})", r"{{`\1`}}", value)
+
+
+def fixup_rule_labels(rule: str):
+    rule = re.sub(r'job="[a-zA-Z0-9-_]+"', 'job="{{ $job }}"', rule)
+    rule = re.sub(r'namespace="[a-zA-Z0-9-_]+"', 'namespace="{{ $namespace }}"', rule)
+    return rule
 
 
 def main():
@@ -79,6 +90,8 @@ def main():
 
         out_path = CHARTS_DIR / chart / "templates" / "prometheus_rule.yaml"
         with out_path.open("w") as out:
+            out.write(COPYRIGHT)
+
             out.write('{{ $job := include "' + chart + '.fullname" . }}\n')
             out.write('{{ $namespace := .Release.Namespace }}\n')
 
@@ -97,10 +110,7 @@ def main():
                     rule["expr"] = LiteralStr(rule["expr"])
 
                     rule_text = yaml.safe_dump([rule])
-
-                    rule_text = rule_text.replace('job="prometheus-k8s"', 'job="{{ $job }}"')
-                    rule_text = rule_text.replace('namespace="monitoring"', 'namespace="{{ $namespace }}"')
-
+                    rule_text = fixup_rule_labels(rule_text)
                     rule_text = textwrap.indent(rule_text, ' ' * 4)
                     out.write(rule_text)
 
