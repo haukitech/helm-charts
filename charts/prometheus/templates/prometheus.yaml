@@ -29,10 +29,19 @@ spec:
           requests:
             storage: {{ .Values.persistence.size }}
         {{- if .Values.persistence.storageClass }}
-        stoageClassName: {{ .Values.persistence.storageClass }}
+        storageClassName: {{ .Values.persistence.storageClass }}
         {{- end }}
   {{- end }}
   {{/* Prometheus config */}}
+  {{/* TODO: Rename .Values.config to .Values.spec for unification with alertmanager */}}
+  {{- if .Values.alertmanager.enabled }}
+  alerting:
+    alertmanagers:
+      - apiVersion: {{ .Values.alertmanager.apiVersion }}
+        name: {{ .Values.alertmanager.name }}
+        namespace: {{ default .Values.alertmanager.namespace .Release.Namespace }}
+        port: {{ .Values.alertmanager.port }}
+  {{- end }}
   {{- if .Values.config.externalUrl }}
   externalUrl: {{ .Values.config.externalUrl | quote }}
   {{- end }}

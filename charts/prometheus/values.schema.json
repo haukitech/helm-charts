@@ -11,7 +11,8 @@
       "type": "string"
     },
     "replicas": {
-      "type": "integer"
+      "type": "integer",
+      "minimum": 1
     },
     "resources": {
       "$ref": "#/$defs/resources"
@@ -89,7 +90,9 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "type": {"enum": ["ClusterIP", "NodePort", "LoadBalancer"]},
+        "type": {
+          "enum": ["ClusterIP", "NodePort", "LoadBalancer"]
+        },
         "ports": {
           "type": "object",
           "additionalProperties": false,

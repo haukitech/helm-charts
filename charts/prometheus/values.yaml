@@ -24,6 +24,13 @@ persistence:
   storageClass: ""
   size: 1Gi
 
+alertmanager:
+  enabled: false
+  apiVersion: v2
+  name: "alertmanager"
+  namespace: ""
+  port: web
+
 config:
   externalUrl: ""
   retention: ""
