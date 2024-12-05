@@ -1,0 +1,59 @@
+nameOverride: ""
+fullnameOverride: ""
+
+replicas: 1
+
+resources: {}
+#  limits:
+#    cpu: 200m
+#    memory: 200Mi
+#  requests:
+#    cpu: 100m
+#    memory: 100Mi
+
+nodeSelector: {}
+#  kubernetes.io/os: linux
+
+securityContext:
+  fsGroup: 2000
+  runAsNonRoot: true
+  runAsUser: 1000
+
+persistence:
+  enabled: false
+  storageClass: ""
+  size: 1Gi
+
+service:
+  type: ClusterIP
+  ports:
+    web: 9093
+    reloaderWeb: 8080
+  nodePorts:
+    web: null
+    reloaderWeb: null
+
+spec:
+  externalUrl: ""
+
+config:
+  global:
+    resolve_timeout: 5m
+  route:
+    group_by: ["namespace"]
+    receiver: "null"
+    continue: false
+  receivers:
+    - name: "null"
+  templates:
+    - '/etc/alertmanager/config/*.tmpl'
+
+templateFiles: []
+
+serviceMonitor:
+  enabled: true
+
+rules:
+  enabled: true
+  disabled: {}
+  # RuleName: true

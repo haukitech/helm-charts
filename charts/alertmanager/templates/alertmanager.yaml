@@ -1,0 +1,39 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Alertmanager
+metadata:
+  name: {{ include "alertmanager.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "alertmanager.labels" . | nindent 4 }}
+spec:
+  version: {{ printf "v%s" .Chart.AppVersion }}
+  replicas: {{ .Values.replicas }}
+  serviceAccountName: {{ include "alertmanager.fullname" . }}
+  {{- with .Values.resources }}
+  resources:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.nodeSelector }}
+  nodeSelector:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.securityContext }}
+  securityContext:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- if .Values.persistence.enabled }}
+  storage:
+    volumeClaimTemplate:
+      spec:
+        resources:
+          requests:
+            storage: {{ .Values.persistence.size }}
+        {{- if .Values.persistence.storageClass }}
+        storageClassName: {{ .Values.persistence.storageClass }}
+        {{- end }}
+  {{- end }}
+  configSecret: {{ include "alertmanager.fullname" . }}
+  {{/* Alertmanager config */}}
+  {{- if .Values.spec.externalUrl }}
+  externalUrl: {{ .Values.spec.externalUrl | quote }}
+  {{- end }}

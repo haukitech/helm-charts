@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "global": {
+      "type": "object"
+    },
+    "nameOverride": {
+      "type": "string"
+    },
+    "fullnameOverride": {
+      "type": "string"
+    },
+    "replicas": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "resources": {
+      "$ref": "#/$defs/resources"
+    },
+    "nodeSelector": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "securityContext": {
+      "type": "object"
+    },
+    "persistence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "storageClass": {
+          "type": "string"
+        },
+        "size": {
+          "type": "string"
+        }
+      }
+    },
+    "service": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "ClusterIP",
+            "NodePort",
+            "LoadBalancer"
+          ]
+        },
+        "ports": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "web": {
+              "type": "integer"
+            },
+            "reloaderWeb": {
+              "type": "integer"
+            }
+          }
+        },
+        "nodePorts": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "web": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "reloaderWeb": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "externalUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "config": {
+      "type": "object"
+    },
+    "templateFiles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "serviceMonitor": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        }
+      }
+    },
+    "rules": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "disabled": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "resources": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "cpu": {
+              "type": "string"
+            },
+            "memory": {
+              "type": "string"
+            }
+          }
+        },
+        "requests": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "cpu": {
+              "type": "string"
+            },
+            "memory": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}
