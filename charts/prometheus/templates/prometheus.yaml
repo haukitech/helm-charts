@@ -33,7 +33,6 @@ spec:
         {{- end }}
   {{- end }}
   {{/* Prometheus config */}}
-  {{/* TODO: Rename .Values.config to .Values.spec for unification with alertmanager */}}
   {{- if .Values.alertmanager.enabled }}
   alerting:
     alertmanagers:
@@ -42,32 +41,32 @@ spec:
         namespace: {{ default .Values.alertmanager.namespace .Release.Namespace }}
         port: {{ .Values.alertmanager.port }}
   {{- end }}
-  {{- if .Values.config.externalUrl }}
-  externalUrl: {{ .Values.config.externalUrl | quote }}
+  {{- if .Values.spec.externalUrl }}
+  externalUrl: {{ .Values.spec.externalUrl | quote }}
   {{- end }}
-  {{- if .Values.config.retention }}
-  retention: {{ .Values.config.retention | quote }}
+  {{- if .Values.spec.retention }}
+  retention: {{ .Values.spec.retention | quote }}
   {{- end }}
-  {{- if .Values.config.retentionSize }}
-  retentionSize: {{ .Values.config.retentionSize | quote }}
+  {{- if .Values.spec.retentionSize }}
+  retentionSize: {{ .Values.spec.retentionSize | quote }}
   {{- end }}
   podMonitorNamespaceSelector:
-    {{- toYaml .Values.config.podMonitorNamespaceSelector | nindent 4 }}
+    {{- toYaml .Values.spec.podMonitorNamespaceSelector | nindent 4 }}
   podMonitorSelector:
-    {{- toYaml .Values.config.podMonitorSelector | nindent 4 }}
+    {{- toYaml .Values.spec.podMonitorSelector | nindent 4 }}
   probeNamespaceSelector:
-    {{- toYaml .Values.config.probeNamespaceSelector | nindent 4 }}
+    {{- toYaml .Values.spec.probeNamespaceSelector | nindent 4 }}
   probeSelector:
-    {{- toYaml .Values.config.probeSelector | nindent 4 }}
+    {{- toYaml .Values.spec.probeSelector | nindent 4 }}
   ruleNamespaceSelector:
-    {{- toYaml .Values.config.ruleNamespaceSelector | nindent 4 }}
+    {{- toYaml .Values.spec.ruleNamespaceSelector | nindent 4 }}
   ruleSelector:
-    {{- toYaml .Values.config.ruleSelector | nindent 4 }}
+    {{- toYaml .Values.spec.ruleSelector | nindent 4 }}
   scrapeConfigNamespaceSelector:
-    {{- toYaml .Values.config.scrapeConfigNamespaceSelector | nindent 4 }}
+    {{- toYaml .Values.spec.scrapeConfigNamespaceSelector | nindent 4 }}
   scrapeConfigSelector:
-    {{- toYaml .Values.config.scrapeConfigSelector | nindent 4 }}
+    {{- toYaml .Values.spec.scrapeConfigSelector | nindent 4 }}
   serviceMonitorNamespaceSelector:
-    {{- toYaml .Values.config.serviceMonitorNamespaceSelector | nindent 4 }}
+    {{- toYaml .Values.spec.serviceMonitorNamespaceSelector | nindent 4 }}
   serviceMonitorSelector:
-    {{- toYaml .Values.config.serviceMonitorSelector | nindent 4 }}
+    {{- toYaml .Values.spec.serviceMonitorSelector | nindent 4 }}

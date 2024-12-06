@@ -48,7 +48,7 @@ config:
   templates:
     - '/etc/alertmanager/config/*.tmpl'
 
-templateFiles: []
+templateFiles: {}
 
 serviceMonitor:
   enabled: true

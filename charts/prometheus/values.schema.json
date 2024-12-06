@@ -1,9 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "additionalProperties": true,
+  "additionalProperties": false,
   "properties": {
-    "global": {"type": "object"},
+    "global": {
+      "type": "object"
+    },
     "nameOverride": {
       "type": "string"
     },
@@ -41,7 +43,28 @@
         }
       }
     },
-    "config": {
+    "alertmanager": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "apiVersion": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "port": {
+          "type": "string"
+        }
+      }
+    },
+    "spec": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -91,7 +114,11 @@
       "additionalProperties": false,
       "properties": {
         "type": {
-          "enum": ["ClusterIP", "NodePort", "LoadBalancer"]
+          "enum": [
+            "ClusterIP",
+            "NodePort",
+            "LoadBalancer"
+          ]
         },
         "ports": {
           "type": "object",
@@ -110,10 +137,16 @@
           "additionalProperties": false,
           "properties": {
             "web": {
-              "type": ["integer", "null"]
+              "type": [
+                "integer",
+                "null"
+              ]
             },
             "reloaderWeb": {
-              "type": ["integer", "null"]
+              "type": [
+                "integer",
+                "null"
+              ]
             }
           }
         }
@@ -125,6 +158,21 @@
       "properties": {
         "enabled": {
           "type": "boolean"
+        }
+      }
+    },
+    "rules": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "disabled": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "boolean"
+          }
         }
       }
     }

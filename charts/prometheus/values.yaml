@@ -31,7 +31,7 @@ alertmanager:
   namespace: ""
   port: web
 
-config:
+spec:
   externalUrl: ""
   retention: ""
   retentionSize: ""
@@ -60,4 +60,5 @@ serviceMonitor:
 
 rules:
   enabled: true
+  # TODO(cutwater): Rename to avoid confusion
   disabled: {}
