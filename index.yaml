@@ -3,6 +3,16 @@ entries:
   alertmanager:
   - apiVersion: v2
     appVersion: 0.27.0
+    created: "2024-12-06T20:00:14.611094337Z"
+    description: Alertmanager
+    digest: 88a2fffffd4f100f6809e6594dbb0c9f44e5e4f81b2daf941529a699c1246ada
+    name: alertmanager
+    type: application
+    urls:
+    - https://github.com/haukitech/helm-charts/releases/download/alertmanager-0.1.1/alertmanager-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 0.27.0
     created: "2024-12-05T19:28:39.744683048Z"
     description: Alertmanager
     digest: 0d110ef02e1849b7928958fb976945bc41571b32ae18e95061818eff17ce2f1a
@@ -55,6 +65,16 @@ entries:
   prometheus:
   - apiVersion: v2
     appVersion: 2.54.1
+    created: "2024-12-06T20:00:14.851114777Z"
+    description: Prometheus
+    digest: 1d4786a3944670ee326c92213f1d37084deddc29d999f3739c9620afd59dcc16
+    name: prometheus
+    type: application
+    urls:
+    - https://github.com/haukitech/helm-charts/releases/download/prometheus-0.1.2/prometheus-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 2.54.1
     created: "2024-12-05T19:38:47.850691331Z"
     description: Prometheus
     digest: fe3988369b10b20445c146093584f0f17e1b90ace342d30235eb18dffb80a83c
@@ -76,6 +96,16 @@ entries:
   prometheus-operator:
   - apiVersion: v2
     appVersion: 0.77.1
+    created: "2024-12-06T20:00:14.986491194Z"
+    description: Prometheus operator
+    digest: a21a36fc3a26f6b69c0b0f90ea266dac0de100edf843a1ad354ac1ab9c1e760b
+    name: prometheus-operator
+    type: application
+    urls:
+    - https://github.com/haukitech/helm-charts/releases/download/prometheus-operator-0.1.2/prometheus-operator-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 0.77.1
     created: "2024-12-05T19:32:10.069463449Z"
     description: Prometheus operator
     digest: 45733524ca03e06c44116a1cde43da84ff744c4c6e48568e3ab6d93d4426325d
@@ -94,4 +124,4 @@ entries:
     urls:
     - https://github.com/haukitech/helm-charts/releases/download/prometheus-operator-0.1.0/prometheus-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2024-12-05T19:42:56.822282816Z"
+generated: "2024-12-06T20:00:14.986515048Z"
