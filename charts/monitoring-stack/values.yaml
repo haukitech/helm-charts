@@ -2,6 +2,7 @@ dependencies:
   prometheusOperator: true
   prometheus: true
   alertmanager: true
+  kubeStateMetrics: true
 
 prometheus-operator:
   fullnameOverride: prometheus-operator
@@ -11,3 +12,13 @@ prometheus:
 
 alertmanager:
   fullnameOverride: alertmanager
+
+kube-state-metrics:
+  fullnameOverride: kube-state-metrics
+  prometheus:
+    monitor:
+      enabled: true
+      honorLabels: true
+      relabelings:
+        - action: labeldrop
+          regex: (pod|service|endpoint|namespace)

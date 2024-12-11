@@ -1,0 +1,14 @@
+helmDefaults:
+  createNamespace: true
+
+#repositories:
+#  - name: haukitech
+#    url: https://haukitech.github.io/helm-charts/
+
+releases:
+  - name: hauki-monitoring-stack
+    namespace: monitoring
+    # chart: haukitech/monitoring-stack
+    chart: ../charts/monitoring-stack
+    values:
+      - ./monitoring-stack.yaml

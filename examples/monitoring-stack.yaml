@@ -2,6 +2,7 @@ dependencies:
   prometheusOperator: true
   prometheus: true
   alertmanager: true
+  kubeStateMetrics: true
 
 prometheus-operator:
   resources:
@@ -22,8 +23,8 @@ prometheus:
   alertmanager:
     enabled: true
 
-  persistence:
-    enabled: true
+  # persistence:
+  #   enabled: true
 
 alertmanager:
   resources:
@@ -31,4 +32,12 @@ alertmanager:
       memory: 200Mi
     requests:
       cpu: 100m
+      memory: 100Mi
+
+kube-state-metrics:
+  resources:
+    limits:
+      memory: 200Mi
+    requests:
+      cpu: 10m
       memory: 100Mi
