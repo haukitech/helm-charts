@@ -23,6 +23,37 @@ entries:
     version: 0.1.0
   monitoring-stack:
   - apiVersion: v2
+    created: "2024-12-13T21:06:13.239027065Z"
+    dependencies:
+    - condition: dependencies.prometheusOperator
+      name: prometheus-operator
+      repository: https://haukitech.github.io/helm-charts/
+      version: 0.1.2
+    - condition: dependencies.prometheus
+      name: prometheus
+      repository: https://haukitech.github.io/helm-charts/
+      version: 0.1.2
+    - condition: dependencies.alertmanager
+      name: alertmanager
+      repository: https://haukitech.github.io/helm-charts/
+      version: 0.1.1
+    - condition: dependencies.kubeStateMetrics
+      name: kube-state-metrics
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 5.27.0
+    - alias: node-exporter
+      condition: dependencies.nodeExporter
+      name: prometheus-node-exporter
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 4.42.0
+    description: Hauki Tech Monitoring Stack
+    digest: d8e6843a8165f30d9e547b033bf55d627774ef748e1dd4ad6352d815f20380d6
+    name: monitoring-stack
+    type: application
+    urls:
+    - https://github.com/haukitech/helm-charts/releases/download/monitoring-stack-0.1.4/monitoring-stack-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
     created: "2024-12-11T20:15:23.642872185Z"
     dependencies:
     - condition: dependencies.prometheusOperator
@@ -172,4 +203,4 @@ entries:
     urls:
     - https://github.com/haukitech/helm-charts/releases/download/prometheus-operator-0.1.0/prometheus-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2024-12-11T20:15:23.642904665Z"
+generated: "2024-12-13T21:06:13.239048145Z"
