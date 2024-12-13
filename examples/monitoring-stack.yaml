@@ -41,3 +41,11 @@ kube-state-metrics:
     requests:
       cpu: 10m
       memory: 100Mi
+
+node-exporter:
+  resources:
+    limits:
+      memory: 64Mi
+    requests:
+      cpu: 10m
+      memory: 64Mi

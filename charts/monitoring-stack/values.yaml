@@ -22,3 +22,22 @@ kube-state-metrics:
       relabelings:
         - action: labeldrop
           regex: (pod|service|endpoint|namespace)
+
+node-exporter:
+  fullnameOverride: node-exporter
+  extraArgs:
+    - "--no-collector.hwmon"
+    - "--no-collector.btrfs"
+    - "--collector.filesystem.mount-points-exclude=^/(dev|proc|run/credentials/.+|sys|var/lib/docker/.+|var/lib/containers/storage/.+|var/lib/kubelet/pods/.+)($|/)"
+    - "--collector.netclass.ignored-devices=^(veth.+|[a-f0-9]{15})$"
+    - "--collector.netdev.device-exclude=^(veth.+|[a-f0-9]{15})$"
+  prometheus:
+    monitor:
+      enabled: true
+      relabelings:
+        - action: replace
+          regex: (.*)
+          replacement: $1
+          sourceLabels:
+            - __meta_kubernetes_pod_node_name
+          targetLabel: instance
