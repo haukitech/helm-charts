@@ -11,4 +11,4 @@ releases:
     # chart: haukitech/monitoring-stack
     chart: ../charts/monitoring-stack
     values:
-      - ./monitoring-stack.yaml
+      - ./values.yaml
