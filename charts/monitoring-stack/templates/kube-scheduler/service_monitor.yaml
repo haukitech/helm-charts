@@ -1,0 +1,42 @@
+{{- if and .Values.kubeScheduler.enabled .Values.kubeScheduler.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "monitoring-stack.kube-scheduler.name" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ include "monitoring-stack.kube-scheduler.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "monitoring-stack.labels" . | nindent 4 }}
+spec:
+  endpoints:
+  - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    interval: 30s
+    port: https-metrics
+    scheme: https
+    tlsConfig:
+      insecureSkipVerify: true
+  - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    interval: 5s
+    metricRelabelings:
+    - action: drop
+      regex: process_start_time_seconds
+      sourceLabels:
+      - __name__
+    path: /metrics/slis
+    port: https-metrics
+    scheme: https
+    tlsConfig:
+      insecureSkipVerify: true
+  jobLabel: {{ .Values.kubeScheduler.serviceMonitor.jobLabel }}
+  namespaceSelector:
+    matchNames:
+    - kube-system
+  selector:
+    {{- if .Values.kubeScheduler.serviceMonitor.selector }}
+    {{- toYaml .Values.kubeScheduler.serviceMonitor.selector | nindent 4 }}
+    {{- else }}
+    matchLabels:
+      app.kubernetes.io/name: {{ include "monitoring-stack.kube-scheduler.name" . }}
+    {{- end }}
+{{- end }}
