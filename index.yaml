@@ -195,6 +195,16 @@ entries:
   prometheus-operator:
   - apiVersion: v2
     appVersion: 0.77.1
+    created: "2025-01-26T17:00:39.569519989Z"
+    description: Prometheus operator
+    digest: 46cb67cfb43f05309d4c820abd7841d5d5beacdf6b862c90a16e95d706298633
+    name: prometheus-operator
+    type: application
+    urls:
+    - https://github.com/haukitech/helm-charts/releases/download/prometheus-operator-0.1.3/prometheus-operator-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 0.77.1
     created: "2024-12-06T20:00:14.986491194Z"
     description: Prometheus operator
     digest: a21a36fc3a26f6b69c0b0f90ea266dac0de100edf843a1ad354ac1ab9c1e760b
@@ -223,4 +233,4 @@ entries:
     urls:
     - https://github.com/haukitech/helm-charts/releases/download/prometheus-operator-0.1.0/prometheus-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2025-01-26T16:57:51.39504573Z"
+generated: "2025-01-26T17:00:39.569544786Z"
