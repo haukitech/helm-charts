@@ -144,6 +144,16 @@ entries:
   prometheus:
   - apiVersion: v2
     appVersion: 2.54.1
+    created: "2025-01-26T13:48:45.835643462Z"
+    description: Prometheus
+    digest: d2224d501a7bf23871eff3a16278a23c9b3a6c12a71ab3e31818c28fdc9af9a6
+    name: prometheus
+    type: application
+    urls:
+    - https://github.com/haukitech/helm-charts/releases/download/prometheus-0.1.3/prometheus-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 2.54.1
     created: "2024-12-06T20:00:14.851114777Z"
     description: Prometheus
     digest: 1d4786a3944670ee326c92213f1d37084deddc29d999f3739c9620afd59dcc16
@@ -203,4 +213,4 @@ entries:
     urls:
     - https://github.com/haukitech/helm-charts/releases/download/prometheus-operator-0.1.0/prometheus-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2024-12-13T21:06:13.239048145Z"
+generated: "2025-01-26T13:48:45.835675141Z"
