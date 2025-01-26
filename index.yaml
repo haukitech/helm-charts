@@ -3,6 +3,16 @@ entries:
   alertmanager:
   - apiVersion: v2
     appVersion: 0.27.0
+    created: "2025-01-26T16:57:51.395013009Z"
+    description: Alertmanager
+    digest: 6af5edcc4b9cf82f820492f566814015ccb32cf88e6f5f27ddf8f50ac2d5d561
+    name: alertmanager
+    type: application
+    urls:
+    - https://github.com/haukitech/helm-charts/releases/download/alertmanager-0.1.2/alertmanager-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 0.27.0
     created: "2024-12-06T20:00:14.611094337Z"
     description: Alertmanager
     digest: 88a2fffffd4f100f6809e6594dbb0c9f44e5e4f81b2daf941529a699c1246ada
@@ -213,4 +223,4 @@ entries:
     urls:
     - https://github.com/haukitech/helm-charts/releases/download/prometheus-operator-0.1.0/prometheus-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2025-01-26T13:48:45.835675141Z"
+generated: "2025-01-26T16:57:51.39504573Z"
