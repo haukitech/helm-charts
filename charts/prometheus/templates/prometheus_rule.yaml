@@ -1,7 +1,10 @@
-# Copyright 2024 Hauki Tech sp. z o.o.
-# SPDX-License-Identifier: Apache-2.0
-# This file is generated based on the source code of the https://github.com/prometheus-operator/kube-prometheus/
-# project, that is licensed under terms of the Apache License 2.0
+{{/*
+Copyright 2024 Hauki Tech sp. z o.o.
+SPDX-License-Identifier: Apache-2.0
+This file is based on the source code of the https://github.com/prometheus-operator/kube-prometheus/
+project, that is licensed under the Apache License 2.0
+"*/}}
+{{- if .Values.enabled }}
 {{ $job := include "prometheus.fullname" . }}
 {{ $namespace := .Release.Namespace }}
 apiVersion: monitoring.coreos.com/v1
@@ -15,11 +18,10 @@ spec:
   groups:
   - name: prometheus
     rules:
-    {{- if not (.Values.rules.disabled.PrometheusBadConfig | default false) }}
+    {{- if not ( has "PrometheusBadConfig" .Values.rules.excluded ) }}
     - alert: PrometheusBadConfig
       annotations:
-        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}}
-          has failed to reload its configuration.
+        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}} has failed to reload its configuration.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusbadconfig
         summary: Failed Prometheus configuration reload.
       expr: |
@@ -30,11 +32,10 @@ spec:
       labels:
         severity: critical
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusSDRefreshFailure | default false) }}
+    {{- if not ( has "PrometheusSDRefreshFailure" .Values.rules.excluded ) }}
     - alert: PrometheusSDRefreshFailure
       annotations:
-        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}}
-          has failed to refresh SD with mechanism {{`{{`}}$labels.mechanism{{`}}`}}.
+        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}} has failed to refresh SD with mechanism {{`{{`}}$labels.mechanism{{`}}`}}.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheussdrefreshfailure
         summary: Failed Prometheus SD refresh.
       expr: |
@@ -43,12 +44,10 @@ spec:
       labels:
         severity: warning
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusKubernetesListWatchFailures | default false) }}
+    {{- if not ( has "PrometheusKubernetesListWatchFailures" .Values.rules.excluded ) }}
     - alert: PrometheusKubernetesListWatchFailures
       annotations:
-        description: Kubernetes service discovery of Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}}
-          is experiencing {{`{{`}} printf "%.0f" $value {{`}}`}} failures with LIST/WATCH
-          requests to the Kubernetes API in the last 5 minutes.
+        description: Kubernetes service discovery of Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}} is experiencing {{`{{`}} printf "%.0f" $value {{`}}`}} failures with LIST/WATCH requests to the Kubernetes API in the last 5 minutes.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheuskuberneteslistwatchfailures
         summary: Requests in Kubernetes SD are failing.
       expr: |
@@ -57,14 +56,12 @@ spec:
       labels:
         severity: warning
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusNotificationQueueRunningFull | default false) }}
+    {{- if not ( has "PrometheusNotificationQueueRunningFull" .Values.rules.excluded ) }}
     - alert: PrometheusNotificationQueueRunningFull
       annotations:
-        description: Alert notification queue of Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}}
-          is running full.
+        description: Alert notification queue of Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}} is running full.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusnotificationqueuerunningfull
-        summary: Prometheus alert notification queue predicted to run full in less than
-          30m.
+        summary: Prometheus alert notification queue predicted to run full in less than 30m.
       expr: |
         # Without min_over_time, failed scrapes could create false negatives, see
         # https://www.robustperception.io/alerting-on-gauges-in-prometheus-2-0 for details.
@@ -77,15 +74,12 @@ spec:
       labels:
         severity: warning
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusErrorSendingAlertsToSomeAlertmanagers | default false) }}
+    {{- if not ( has "PrometheusErrorSendingAlertsToSomeAlertmanagers" .Values.rules.excluded ) }}
     - alert: PrometheusErrorSendingAlertsToSomeAlertmanagers
       annotations:
-        description: '{{`{{`}} printf "%.1f" $value {{`}}`}}% errors while sending alerts
-          from Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}}
-          to Alertmanager {{`{{`}}$labels.alertmanager{{`}}`}}.'
+        description: '{{`{{`}} printf "%.1f" $value {{`}}`}}% errors while sending alerts from Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}} to Alertmanager {{`{{`}}$labels.alertmanager{{`}}`}}.'
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheuserrorsendingalertstosomealertmanagers
-        summary: Prometheus has encountered more than 1% errors sending alerts to a specific
-          Alertmanager.
+        summary: Prometheus has encountered more than 1% errors sending alerts to a specific Alertmanager.
       expr: |
         (
           rate(prometheus_notifications_errors_total{job="{{ $job }}",namespace="{{ $namespace }}"}[5m])
@@ -98,11 +92,10 @@ spec:
       labels:
         severity: warning
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusNotConnectedToAlertmanagers | default false) }}
+    {{- if not ( has "PrometheusNotConnectedToAlertmanagers" .Values.rules.excluded ) }}
     - alert: PrometheusNotConnectedToAlertmanagers
       annotations:
-        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}}
-          is not connected to any Alertmanagers.
+        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}} is not connected to any Alertmanagers.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusnotconnectedtoalertmanagers
         summary: Prometheus is not connected to any Alertmanagers.
       expr: |
@@ -113,12 +106,10 @@ spec:
       labels:
         severity: warning
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusTSDBReloadsFailing | default false) }}
+    {{- if not ( has "PrometheusTSDBReloadsFailing" .Values.rules.excluded ) }}
     - alert: PrometheusTSDBReloadsFailing
       annotations:
-        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}}
-          has detected {{`{{`}}$value | humanize{{`}}`}} reload failures over the last
-          3h.
+        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}} has detected {{`{{`}}$value | humanize{{`}}`}} reload failures over the last 3h.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheustsdbreloadsfailing
         summary: Prometheus has issues reloading blocks from disk.
       expr: |
@@ -127,12 +118,10 @@ spec:
       labels:
         severity: warning
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusTSDBCompactionsFailing | default false) }}
+    {{- if not ( has "PrometheusTSDBCompactionsFailing" .Values.rules.excluded ) }}
     - alert: PrometheusTSDBCompactionsFailing
       annotations:
-        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}}
-          has detected {{`{{`}}$value | humanize{{`}}`}} compaction failures over the
-          last 3h.
+        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}} has detected {{`{{`}}$value | humanize{{`}}`}} compaction failures over the last 3h.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheustsdbcompactionsfailing
         summary: Prometheus has issues compacting blocks.
       expr: |
@@ -141,11 +130,10 @@ spec:
       labels:
         severity: warning
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusNotIngestingSamples | default false) }}
+    {{- if not ( has "PrometheusNotIngestingSamples" .Values.rules.excluded ) }}
     - alert: PrometheusNotIngestingSamples
       annotations:
-        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}}
-          is not ingesting samples.
+        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}} is not ingesting samples.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusnotingestingsamples
         summary: Prometheus is not ingesting samples.
       expr: |
@@ -162,12 +150,10 @@ spec:
       labels:
         severity: warning
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusDuplicateTimestamps | default false) }}
+    {{- if not ( has "PrometheusDuplicateTimestamps" .Values.rules.excluded ) }}
     - alert: PrometheusDuplicateTimestamps
       annotations:
-        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}}
-          is dropping {{`{{`}} printf "%.4g" $value  {{`}}`}} samples/s with different
-          values but duplicated timestamp.
+        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}} is dropping {{`{{`}} printf "%.4g" $value  {{`}}`}} samples/s with different values but duplicated timestamp.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusduplicatetimestamps
         summary: Prometheus is dropping samples with duplicate timestamps.
       expr: |
@@ -176,12 +162,10 @@ spec:
       labels:
         severity: warning
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusOutOfOrderTimestamps | default false) }}
+    {{- if not ( has "PrometheusOutOfOrderTimestamps" .Values.rules.excluded ) }}
     - alert: PrometheusOutOfOrderTimestamps
       annotations:
-        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}}
-          is dropping {{`{{`}} printf "%.4g" $value  {{`}}`}} samples/s with timestamps
-          arriving out of order.
+        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}} is dropping {{`{{`}} printf "%.4g" $value  {{`}}`}} samples/s with timestamps arriving out of order.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusoutofordertimestamps
         summary: Prometheus drops samples with out-of-order timestamps.
       expr: |
@@ -190,12 +174,10 @@ spec:
       labels:
         severity: warning
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusRemoteStorageFailures | default false) }}
+    {{- if not ( has "PrometheusRemoteStorageFailures" .Values.rules.excluded ) }}
     - alert: PrometheusRemoteStorageFailures
       annotations:
-        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}}
-          failed to send {{`{{`}} printf "%.1f" $value {{`}}`}}% of the samples to {{`{{`}}
-          $labels.remote_name{{`}}`}}:{{`{{`}} $labels.url {{`}}`}}
+        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}} failed to send {{`{{`}} printf "%.1f" $value {{`}}`}}% of the samples to {{`{{`}} $labels.remote_name{{`}}`}}:{{`{{`}} $labels.url {{`}}`}}
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusremotestoragefailures
         summary: Prometheus fails to send samples to remote storage.
       expr: |
@@ -214,12 +196,10 @@ spec:
       labels:
         severity: critical
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusRemoteWriteBehind | default false) }}
+    {{- if not ( has "PrometheusRemoteWriteBehind" .Values.rules.excluded ) }}
     - alert: PrometheusRemoteWriteBehind
       annotations:
-        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}}
-          remote write is {{`{{`}} printf "%.1f" $value {{`}}`}}s behind for {{`{{`}}
-          $labels.remote_name{{`}}`}}:{{`{{`}} $labels.url {{`}}`}}.
+        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}} remote write is {{`{{`}} printf "%.1f" $value {{`}}`}}s behind for {{`{{`}} $labels.remote_name{{`}}`}}:{{`{{`}} $labels.url {{`}}`}}.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusremotewritebehind
         summary: Prometheus remote write is behind.
       expr: |
@@ -235,17 +215,12 @@ spec:
       labels:
         severity: critical
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusRemoteWriteDesiredShards | default false) }}
+    {{- if not ( has "PrometheusRemoteWriteDesiredShards" .Values.rules.excluded ) }}
     - alert: PrometheusRemoteWriteDesiredShards
       annotations:
-        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}}
-          remote write desired shards calculation wants to run {{`{{`}} $value {{`}}`}}
-          shards for queue {{`{{`}} $labels.remote_name{{`}}`}}:{{`{{`}} $labels.url {{`}}`}},
-          which is more than the max of {{`{{`}} printf `prometheus_remote_storage_shards_max{instance="%s",job="{{ $job }}",namespace="{{ $namespace }}"}`
-          $labels.instance | query | first | value {{`}}`}}.
+        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}} remote write desired shards calculation wants to run {{`{{`}} $value {{`}}`}} shards for queue {{`{{`}} $labels.remote_name{{`}}`}}:{{`{{`}} $labels.url {{`}}`}}, which is more than the max of {{`{{`}} printf `prometheus_remote_storage_shards_max{instance="%s",job="{{ $job }}",namespace="{{ $namespace }}"}` $labels.instance | query | first | value {{`}}`}}.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusremotewritedesiredshards
-        summary: Prometheus remote write desired shards calculation wants to run more
-          than configured max shards.
+        summary: Prometheus remote write desired shards calculation wants to run more than configured max shards.
       expr: |
         # Without max_over_time, failed scrapes could create false negatives, see
         # https://www.robustperception.io/alerting-on-gauges-in-prometheus-2-0 for details.
@@ -258,12 +233,10 @@ spec:
       labels:
         severity: warning
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusRuleFailures | default false) }}
+    {{- if not ( has "PrometheusRuleFailures" .Values.rules.excluded ) }}
     - alert: PrometheusRuleFailures
       annotations:
-        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}}
-          has failed to evaluate {{`{{`}} printf "%.0f" $value {{`}}`}} rules in the last
-          5m.
+        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}} has failed to evaluate {{`{{`}} printf "%.0f" $value {{`}}`}} rules in the last 5m.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusrulefailures
         summary: Prometheus is failing rule evaluations.
       expr: |
@@ -272,12 +245,10 @@ spec:
       labels:
         severity: critical
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusMissingRuleEvaluations | default false) }}
+    {{- if not ( has "PrometheusMissingRuleEvaluations" .Values.rules.excluded ) }}
     - alert: PrometheusMissingRuleEvaluations
       annotations:
-        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}}
-          has missed {{`{{`}} printf "%.0f" $value {{`}}`}} rule group evaluations in
-          the last 5m.
+        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}} has missed {{`{{`}} printf "%.0f" $value {{`}}`}} rule group evaluations in the last 5m.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusmissingruleevaluations
         summary: Prometheus is missing rule evaluations due to slow rule group evaluation.
       expr: |
@@ -286,42 +257,34 @@ spec:
       labels:
         severity: warning
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusTargetLimitHit | default false) }}
+    {{- if not ( has "PrometheusTargetLimitHit" .Values.rules.excluded ) }}
     - alert: PrometheusTargetLimitHit
       annotations:
-        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}}
-          has dropped {{`{{`}} printf "%.0f" $value {{`}}`}} targets because the number
-          of targets exceeded the configured target_limit.
+        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}} has dropped {{`{{`}} printf "%.0f" $value {{`}}`}} targets because the number of targets exceeded the configured target_limit.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheustargetlimithit
-        summary: Prometheus has dropped targets because some scrape configs have exceeded
-          the targets limit.
+        summary: Prometheus has dropped targets because some scrape configs have exceeded the targets limit.
       expr: |
         increase(prometheus_target_scrape_pool_exceeded_target_limit_total{job="{{ $job }}",namespace="{{ $namespace }}"}[5m]) > 0
       for: 15m
       labels:
         severity: warning
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusLabelLimitHit | default false) }}
+    {{- if not ( has "PrometheusLabelLimitHit" .Values.rules.excluded ) }}
     - alert: PrometheusLabelLimitHit
       annotations:
-        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}}
-          has dropped {{`{{`}} printf "%.0f" $value {{`}}`}} targets because some samples
-          exceeded the configured label_limit, label_name_length_limit or label_value_length_limit.
+        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}} has dropped {{`{{`}} printf "%.0f" $value {{`}}`}} targets because some samples exceeded the configured label_limit, label_name_length_limit or label_value_length_limit.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheuslabellimithit
-        summary: Prometheus has dropped targets because some scrape configs have exceeded
-          the labels limit.
+        summary: Prometheus has dropped targets because some scrape configs have exceeded the labels limit.
       expr: |
         increase(prometheus_target_scrape_pool_exceeded_label_limits_total{job="{{ $job }}",namespace="{{ $namespace }}"}[5m]) > 0
       for: 15m
       labels:
         severity: warning
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusScrapeBodySizeLimitHit | default false) }}
+    {{- if not ( has "PrometheusScrapeBodySizeLimitHit" .Values.rules.excluded ) }}
     - alert: PrometheusScrapeBodySizeLimitHit
       annotations:
-        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}}
-          has failed {{`{{`}} printf "%.0f" $value {{`}}`}} scrapes in the last 5m because
-          some targets exceeded the configured body_size_limit.
+        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}} has failed {{`{{`}} printf "%.0f" $value {{`}}`}} scrapes in the last 5m because some targets exceeded the configured body_size_limit.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusscrapebodysizelimithit
         summary: Prometheus has dropped some targets that exceeded body size limit.
       expr: |
@@ -330,26 +293,22 @@ spec:
       labels:
         severity: warning
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusScrapeSampleLimitHit | default false) }}
+    {{- if not ( has "PrometheusScrapeSampleLimitHit" .Values.rules.excluded ) }}
     - alert: PrometheusScrapeSampleLimitHit
       annotations:
-        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}}
-          has failed {{`{{`}} printf "%.0f" $value {{`}}`}} scrapes in the last 5m because
-          some targets exceeded the configured sample_limit.
+        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}} has failed {{`{{`}} printf "%.0f" $value {{`}}`}} scrapes in the last 5m because some targets exceeded the configured sample_limit.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusscrapesamplelimithit
-        summary: Prometheus has failed scrapes that have exceeded the configured sample
-          limit.
+        summary: Prometheus has failed scrapes that have exceeded the configured sample limit.
       expr: |
         increase(prometheus_target_scrapes_exceeded_sample_limit_total{job="{{ $job }}",namespace="{{ $namespace }}"}[5m]) > 0
       for: 15m
       labels:
         severity: warning
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusTargetSyncFailure | default false) }}
+    {{- if not ( has "PrometheusTargetSyncFailure" .Values.rules.excluded ) }}
     - alert: PrometheusTargetSyncFailure
       annotations:
-        description: '{{`{{`}} printf "%.0f" $value {{`}}`}} targets in Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}}
-          have failed to sync because invalid configuration was supplied.'
+        description: '{{`{{`}} printf "%.0f" $value {{`}}`}} targets in Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}} have failed to sync because invalid configuration was supplied.'
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheustargetsyncfailure
         summary: Prometheus has failed to sync targets.
       expr: |
@@ -358,12 +317,10 @@ spec:
       labels:
         severity: critical
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusHighQueryLoad | default false) }}
+    {{- if not ( has "PrometheusHighQueryLoad" .Values.rules.excluded ) }}
     - alert: PrometheusHighQueryLoad
       annotations:
-        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}}
-          query API has less than 20% available capacity in its query engine for the last
-          15 minutes.
+        description: Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}} query API has less than 20% available capacity in its query engine for the last 15 minutes.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheushighqueryload
         summary: Prometheus is reaching its maximum capacity serving concurrent requests.
       expr: |
@@ -372,12 +329,10 @@ spec:
       labels:
         severity: warning
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusErrorSendingAlertsToAnyAlertmanager | default false) }}
+    {{- if not ( has "PrometheusErrorSendingAlertsToAnyAlertmanager" .Values.rules.excluded ) }}
     - alert: PrometheusErrorSendingAlertsToAnyAlertmanager
       annotations:
-        description: '{{`{{`}} printf "%.1f" $value {{`}}`}}% minimum errors while sending
-          alerts from Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}}
-          to any Alertmanager.'
+        description: '{{`{{`}} printf "%.1f" $value {{`}}`}}% minimum errors while sending alerts from Prometheus {{`{{`}}$labels.namespace{{`}}`}}/{{`{{`}}$labels.pod{{`}}`}} to any Alertmanager.'
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheuserrorsendingalertstoanyalertmanager
         summary: Prometheus encounters more than 3% errors sending alerts to any Alertmanager.
       expr: |
@@ -392,3 +347,4 @@ spec:
       labels:
         severity: critical
     {{- end }}
+{{- end }}
