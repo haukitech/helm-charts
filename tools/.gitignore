@@ -2,4 +2,4 @@ __pycache__/
 .venv/
 *.egg-info/
 .python-version
-.temp/
+.cache/

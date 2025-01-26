@@ -1,0 +1,33 @@
+{{ '{{' }}/*
+Copyright 2024 Hauki Tech sp. z o.o.
+SPDX-License-Identifier: Apache-2.0
+This file is based on the source code of the https://github.com/prometheus-operator/kube-prometheus/
+project, that is licensed under the Apache License 2.0
+"*/{{ '}}' }}
+{{ '{{' }}- if {{ values_prefix }}.enabled {{ '}}' }}
+{%- for label in rule_labels %}
+{{ '{{' }} ${{ label.var_name }} := {{ label.var_value }} {{ '}}' }}
+{%- endfor %}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ '{{' }} include "{{ macros_prefix }}.fullname" . {{ '}}' }}
+  namespace: {{ '{{' }} .Release.Namespace {{ '}}' }}
+  labels:
+    {{ '{{' }}- include "{{ macros_prefix }}.labels" . | nindent 4 {{ '}}' }}
+spec:
+  groups:
+{%- for group in groups %}
+  - name: {{ group.name }}
+    rules:
+{%- for rule in group.rules  %}
+{%- if rule.alert is not none %}
+    {{ '{{' }}- if not ( has "{{ rule.alert }}" {{ values_prefix }}.rules.excluded ) {{ '}}' }}
+{%- endif %}
+    {{ rule.text | trim | indent(4) }}
+{%- if rule.alert is not none %}
+    {{ '{{' }}- end {{ '}}' }}
+{%- endif %}
+{%- endfor %}
+{%- endfor %}
+{{ '{{' }}- end {{ '}}' }}
