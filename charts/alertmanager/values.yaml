@@ -55,5 +55,6 @@ serviceMonitor:
 
 rules:
   enabled: true
-  disabled: {}
-  # RuleName: true
+  excluded: []
+  #  - "RuleName1"
+  #  - "RuleName2"

@@ -120,10 +120,10 @@
         "enabled": {
           "type": "boolean"
         },
-        "disabled": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "boolean"
+        "excluded": {
+          "type": "array",
+          "items": {
+            "type": "string"
           }
         }
       }
