@@ -19,6 +19,10 @@ prometheus:
     requests:
       cpu: 100m
       memory: 100Mi
+  service:
+    type: NodePort
+    nodePorts:
+      web: 31001
 
   alertmanager:
     enabled: true

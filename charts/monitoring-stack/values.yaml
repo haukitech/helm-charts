@@ -1,3 +1,49 @@
+nameOverride: ""
+fullnameOverride: ""
+
+nodeExporter:
+  enabled: true
+  rules:
+    excluded: []
+
+kubeStateMetrics:
+  enabled: true
+  rules:
+    excluded: []
+
+kubernetesControlPlane:
+  enabled: true
+  rules:
+    excluded:
+      - KubeControllerManagerDown
+      - KubeSchedulerDown
+
+coreDns:
+  enabled: true
+
+kubeApiServer:
+  enabled: true
+
+kubeControllerManager:
+  enabled: false
+
+kubeScheduler:
+  enabled: false
+
+  service:
+    enabled: true
+    selector: {}
+
+  serviceMonitor:
+    enabled: true
+    jobLabel: app.kubernetes.io/name
+    selector: {}
+
+kubelet:
+  enabled: true
+
+# Dependencies
+# -------------------------------------
 dependencies:
   prometheusOperator: true
   prometheus: true

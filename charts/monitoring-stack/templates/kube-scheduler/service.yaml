@@ -1,0 +1,25 @@
+{{- if and .Values.kubeScheduler.enabled .Values.kubeScheduler.service.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "monitoring-stack.kube-scheduler.name" . }}
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/name: {{ include "monitoring-stack.kube-scheduler.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "monitoring-stack.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - name: https-metrics
+      port: 10259
+      protocol: TCP
+      targetPort: 10259
+  selector:
+    {{- if .Values.kubeScheduler.service.selector }}
+    {{- toYaml .Values.kubeScheduler.service.selector | nindent 4 }}
+    {{- else }}
+    component: kube-scheduler
+    {{- end }}
+{{- end }}
