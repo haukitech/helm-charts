@@ -53,8 +53,9 @@ serviceMonitor:
 
 rules:
   enabled: true
-  # TODO(cutwater): Rename to avoid confusion
-  disabled: {}
+  excluded: []
+  #  - "RuleName1"
+  #  - "RuleName2"
 
 # ---------------------------------------------------------
 # Config reloader

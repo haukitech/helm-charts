@@ -1,7 +1,10 @@
-# Copyright 2024 Hauki Tech sp. z o.o.
-# SPDX-License-Identifier: Apache-2.0
-# This file is generated based on the source code of the https://github.com/prometheus-operator/kube-prometheus/
-# project, that is licensed under terms of the Apache License 2.0
+{{/*
+Copyright 2024 Hauki Tech sp. z o.o.
+SPDX-License-Identifier: Apache-2.0
+This file is based on the source code of the https://github.com/prometheus-operator/kube-prometheus/
+project, that is licensed under the Apache License 2.0
+"*/}}
+{{- if .Values.enabled }}
 {{ $job := include "prometheus-operator.fullname" . }}
 {{ $namespace := .Release.Namespace }}
 apiVersion: monitoring.coreos.com/v1
@@ -15,11 +18,10 @@ spec:
   groups:
   - name: prometheus-operator
     rules:
-    {{- if not (.Values.rules.disabled.PrometheusOperatorListErrors | default false) }}
+    {{- if not ( has "PrometheusOperatorListErrors" .Values.rules.excluded ) }}
     - alert: PrometheusOperatorListErrors
       annotations:
-        description: Errors while performing List operations in controller {{`{{`}}$labels.controller{{`}}`}}
-          in {{`{{`}}$labels.namespace{{`}}`}} namespace.
+        description: Errors while performing List operations in controller {{`{{`}}$labels.controller{{`}}`}} in {{`{{`}}$labels.namespace{{`}}`}} namespace.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus-operator/prometheusoperatorlisterrors
         summary: Errors while performing list operations in controller.
       expr: |
@@ -28,11 +30,10 @@ spec:
       labels:
         severity: warning
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusOperatorWatchErrors | default false) }}
+    {{- if not ( has "PrometheusOperatorWatchErrors" .Values.rules.excluded ) }}
     - alert: PrometheusOperatorWatchErrors
       annotations:
-        description: Errors while performing watch operations in controller {{`{{`}}$labels.controller{{`}}`}}
-          in {{`{{`}}$labels.namespace{{`}}`}} namespace.
+        description: Errors while performing watch operations in controller {{`{{`}}$labels.controller{{`}}`}} in {{`{{`}}$labels.namespace{{`}}`}} namespace.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus-operator/prometheusoperatorwatcherrors
         summary: Errors while performing watch operations in controller.
       expr: |
@@ -41,11 +42,10 @@ spec:
       labels:
         severity: warning
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusOperatorSyncFailed | default false) }}
+    {{- if not ( has "PrometheusOperatorSyncFailed" .Values.rules.excluded ) }}
     - alert: PrometheusOperatorSyncFailed
       annotations:
-        description: Controller {{`{{`}} $labels.controller {{`}}`}} in {{`{{`}} $labels.namespace
-          {{`}}`}} namespace fails to reconcile {{`{{`}} $value {{`}}`}} objects.
+        description: Controller {{`{{`}} $labels.controller {{`}}`}} in {{`{{`}} $labels.namespace {{`}}`}} namespace fails to reconcile {{`{{`}} $value {{`}}`}} objects.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus-operator/prometheusoperatorsyncfailed
         summary: Last controller reconciliation failed
       expr: |
@@ -54,12 +54,10 @@ spec:
       labels:
         severity: warning
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusOperatorReconcileErrors | default false) }}
+    {{- if not ( has "PrometheusOperatorReconcileErrors" .Values.rules.excluded ) }}
     - alert: PrometheusOperatorReconcileErrors
       annotations:
-        description: '{{`{{`}} $value | humanizePercentage {{`}}`}} of reconciling operations
-          failed for {{`{{`}} $labels.controller {{`}}`}} controller in {{`{{`}} $labels.namespace
-          {{`}}`}} namespace.'
+        description: '{{`{{`}} $value | humanizePercentage {{`}}`}} of reconciling operations failed for {{`{{`}} $labels.controller {{`}}`}} controller in {{`{{`}} $labels.namespace {{`}}`}} namespace.'
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus-operator/prometheusoperatorreconcileerrors
         summary: Errors while reconciling objects.
       expr: |
@@ -68,12 +66,10 @@ spec:
       labels:
         severity: warning
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusOperatorStatusUpdateErrors | default false) }}
+    {{- if not ( has "PrometheusOperatorStatusUpdateErrors" .Values.rules.excluded ) }}
     - alert: PrometheusOperatorStatusUpdateErrors
       annotations:
-        description: '{{`{{`}} $value | humanizePercentage {{`}}`}} of status update operations
-          failed for {{`{{`}} $labels.controller {{`}}`}} controller in {{`{{`}} $labels.namespace
-          {{`}}`}} namespace.'
+        description: '{{`{{`}} $value | humanizePercentage {{`}}`}} of status update operations failed for {{`{{`}} $labels.controller {{`}}`}} controller in {{`{{`}} $labels.namespace {{`}}`}} namespace.'
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus-operator/prometheusoperatorstatusupdateerrors
         summary: Errors while updating objects status.
       expr: |
@@ -82,11 +78,10 @@ spec:
       labels:
         severity: warning
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusOperatorNodeLookupErrors | default false) }}
+    {{- if not ( has "PrometheusOperatorNodeLookupErrors" .Values.rules.excluded ) }}
     - alert: PrometheusOperatorNodeLookupErrors
       annotations:
-        description: Errors while reconciling Prometheus in {{`{{`}} $labels.namespace
-          {{`}}`}} Namespace.
+        description: Errors while reconciling Prometheus in {{`{{`}} $labels.namespace {{`}}`}} Namespace.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus-operator/prometheusoperatornodelookuperrors
         summary: Errors while reconciling Prometheus.
       expr: |
@@ -95,11 +90,10 @@ spec:
       labels:
         severity: warning
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusOperatorNotReady | default false) }}
+    {{- if not ( has "PrometheusOperatorNotReady" .Values.rules.excluded ) }}
     - alert: PrometheusOperatorNotReady
       annotations:
-        description: Prometheus operator in {{`{{`}} $labels.namespace {{`}}`}} namespace
-          isn't ready to reconcile {{`{{`}} $labels.controller {{`}}`}} resources.
+        description: Prometheus operator in {{`{{`}} $labels.namespace {{`}}`}} namespace isn't ready to reconcile {{`{{`}} $labels.controller {{`}}`}} resources.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus-operator/prometheusoperatornotready
         summary: Prometheus operator not ready
       expr: |
@@ -108,12 +102,10 @@ spec:
       labels:
         severity: warning
     {{- end }}
-    {{- if not (.Values.rules.disabled.PrometheusOperatorRejectedResources | default false) }}
+    {{- if not ( has "PrometheusOperatorRejectedResources" .Values.rules.excluded ) }}
     - alert: PrometheusOperatorRejectedResources
       annotations:
-        description: Prometheus operator in {{`{{`}} $labels.namespace {{`}}`}} namespace
-          rejected {{`{{`}} printf "%0.0f" $value {{`}}`}} {{`{{`}} $labels.controller
-          {{`}}`}}/{{`{{`}} $labels.resource {{`}}`}} resources.
+        description: Prometheus operator in {{`{{`}} $labels.namespace {{`}}`}} namespace rejected {{`{{`}} printf "%0.0f" $value {{`}}`}} {{`{{`}} $labels.controller {{`}}`}}/{{`{{`}} $labels.resource {{`}}`}} resources.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus-operator/prometheusoperatorrejectedresources
         summary: Resources rejected by Prometheus operator
       expr: |
@@ -124,14 +116,12 @@ spec:
     {{- end }}
   - name: config-reloaders
     rules:
-    {{- if not (.Values.rules.disabled.ConfigReloaderSidecarErrors | default false) }}
+    {{- if not ( has "ConfigReloaderSidecarErrors" .Values.rules.excluded ) }}
     - alert: ConfigReloaderSidecarErrors
       annotations:
-        description: 'Errors encountered while the {{`{{`}}$labels.pod{{`}}`}} config-reloader
-          sidecar attempts to sync config in {{`{{`}}$labels.namespace{{`}}`}} namespace.
-
-          As a result, configuration for service running in {{`{{`}}$labels.pod{{`}}`}}
-          may be stale and cannot be updated anymore.'
+        description: |-
+          Errors encountered while the {{`{{`}}$labels.pod{{`}}`}} config-reloader sidecar attempts to sync config in {{`{{`}}$labels.namespace{{`}}`}} namespace.
+          As a result, configuration for service running in {{`{{`}}$labels.pod{{`}}`}} may be stale and cannot be updated anymore.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus-operator/configreloadersidecarerrors
         summary: config-reloader sidecar has not had a successful reload for 10m
       expr: |
@@ -140,3 +130,4 @@ spec:
       labels:
         severity: warning
     {{- end }}
+{{- end }}
