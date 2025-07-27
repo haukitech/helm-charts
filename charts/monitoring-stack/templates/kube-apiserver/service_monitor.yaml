@@ -72,20 +72,7 @@ spec:
     tlsConfig:
       caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
       serverName: kubernetes
-  - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
-    interval: 5s
-    metricRelabelings:
-    - action: drop
-      regex: process_start_time_seconds
-      sourceLabels:
-      - __name__
-    path: /metrics/slis
-    port: https
-    scheme: https
-    tlsConfig:
-      caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-      serverName: kubernetes
-  jobLabel: component
+  jobLabel: app.kubernetes.io/name
   namespaceSelector:
     matchNames:
     - default
