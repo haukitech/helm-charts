@@ -16,6 +16,7 @@ metadata:
     {{- include "monitoring-stack.kube-state-metrics.labels" . | nindent 4 }}
 spec:
   groups:
+  {{- if not ( has "kube-state-metrics" .Values.kubeStateMetrics.rules.excludedGroups ) }}
   - name: kube-state-metrics
     rules:
     {{- if not ( has "KubeStateMetricsListErrors" .Values.kubeStateMetrics.rules.excluded ) }}
@@ -75,4 +76,5 @@ spec:
       labels:
         severity: critical
     {{- end }}
+  {{- end }}
 {{- end }}

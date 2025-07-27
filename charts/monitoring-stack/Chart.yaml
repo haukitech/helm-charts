@@ -2,7 +2,7 @@ apiVersion: v2
 name: monitoring-stack
 description: Hauki Tech Monitoring Stack
 type: application
-version: 0.1.6
+version: 0.1.7
 
 dependencies:
   - name: prometheus-operator

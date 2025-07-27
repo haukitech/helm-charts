@@ -14,9 +14,10 @@ kubeStateMetrics:
 kubernetesControlPlane:
   enabled: true
   rules:
-    excluded:
-      - KubeControllerManagerDown
-      - KubeSchedulerDown
+    excluded: []
+    excludedGroups:
+      - kubernetes-system-controller-manager
+      - kubernetes-system-scheduler
 
 coreDns:
   enabled: true

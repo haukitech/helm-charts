@@ -16,6 +16,7 @@ metadata:
     {{- include "monitoring-stack.node-exporter.labels" . | nindent 4 }}
 spec:
   groups:
+  {{- if not ( has "node-exporter" .Values.nodeExporter.rules.excludedGroups ) }}
   - name: node-exporter
     rules:
     {{- if not ( has "NodeFilesystemSpaceFillingUp" .Values.nodeExporter.rules.excluded ) }}
@@ -380,6 +381,8 @@ spec:
       labels:
         severity: warning
     {{- end }}
+  {{- end }}
+  {{- if not ( has "node-exporter.rules" .Values.nodeExporter.rules.excludedGroups ) }}
   - name: node-exporter.rules
     rules:
     - expr: |
@@ -447,4 +450,5 @@ spec:
           rate(node_network_transmit_drop_total{job="{{ $job }}", device!="lo"}[5m])
         )
       record: instance:node_network_transmit_drop_excluding_lo:rate5m
+  {{- end }}
 {{- end }}

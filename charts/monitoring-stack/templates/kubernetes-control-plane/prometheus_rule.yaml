@@ -20,6 +20,7 @@ metadata:
     {{- include "monitoring-stack.kubernetes-control-plane.labels" . | nindent 4 }}
 spec:
   groups:
+  {{- if not ( has "kubernetes-apps" .Values.kubernetesControlPlane.rules.excludedGroups ) }}
   - name: kubernetes-apps
     rules:
     {{- if not ( has "KubePodCrashLooping" .Values.kubernetesControlPlane.rules.excluded ) }}
@@ -296,6 +297,8 @@ spec:
       labels:
         severity: warning
     {{- end }}
+  {{- end }}
+  {{- if not ( has "kubernetes-resources" .Values.kubernetesControlPlane.rules.excludedGroups ) }}
   - name: kubernetes-resources
     rules:
     {{- if not ( has "KubeCPUOvercommit" .Values.kubernetesControlPlane.rules.excluded ) }}
@@ -416,6 +419,8 @@ spec:
       labels:
         severity: info
     {{- end }}
+  {{- end }}
+  {{- if not ( has "kubernetes-storage" .Values.kubernetesControlPlane.rules.excludedGroups ) }}
   - name: kubernetes-storage
     rules:
     {{- if not ( has "KubePersistentVolumeFillingUp" .Values.kubernetesControlPlane.rules.excluded ) }}
@@ -522,6 +527,8 @@ spec:
       labels:
         severity: critical
     {{- end }}
+  {{- end }}
+  {{- if not ( has "kubernetes-system" .Values.kubernetesControlPlane.rules.excludedGroups ) }}
   - name: kubernetes-system
     rules:
     {{- if not ( has "KubeVersionMismatch" .Values.kubernetesControlPlane.rules.excluded ) }}
@@ -551,6 +558,8 @@ spec:
       labels:
         severity: warning
     {{- end }}
+  {{- end }}
+  {{- if not ( has "kube-apiserver-slos" .Values.kubernetesControlPlane.rules.excludedGroups ) }}
   - name: kube-apiserver-slos
     rules:
     {{- if not ( has "KubeAPIErrorBudgetBurn" .Values.kubernetesControlPlane.rules.excluded ) }}
@@ -617,6 +626,8 @@ spec:
         severity: warning
         short: 6h
     {{- end }}
+  {{- end }}
+  {{- if not ( has "kubernetes-system-apiserver" .Values.kubernetesControlPlane.rules.excludedGroups ) }}
   - name: kubernetes-system-apiserver
     rules:
     {{- if not ( has "KubeClientCertificateExpiration" .Values.kubernetesControlPlane.rules.excluded ) }}
@@ -690,6 +701,8 @@ spec:
       labels:
         severity: warning
     {{- end }}
+  {{- end }}
+  {{- if not ( has "kubernetes-system-kubelet" .Values.kubernetesControlPlane.rules.excludedGroups ) }}
   - name: kubernetes-system-kubelet
     rules:
     {{- if not ( has "KubeNodeNotReady" .Values.kubernetesControlPlane.rules.excluded ) }}
@@ -850,6 +863,8 @@ spec:
       labels:
         severity: critical
     {{- end }}
+  {{- end }}
+  {{- if not ( has "kubernetes-system-scheduler" .Values.kubernetesControlPlane.rules.excludedGroups ) }}
   - name: kubernetes-system-scheduler
     rules:
     {{- if not ( has "KubeSchedulerDown" .Values.kubernetesControlPlane.rules.excluded ) }}
@@ -864,6 +879,8 @@ spec:
       labels:
         severity: critical
     {{- end }}
+  {{- end }}
+  {{- if not ( has "kubernetes-system-controller-manager" .Values.kubernetesControlPlane.rules.excludedGroups ) }}
   - name: kubernetes-system-controller-manager
     rules:
     {{- if not ( has "KubeControllerManagerDown" .Values.kubernetesControlPlane.rules.excluded ) }}
@@ -878,6 +895,8 @@ spec:
       labels:
         severity: critical
     {{- end }}
+  {{- end }}
+  {{- if not ( has "kube-apiserver-availability.rules" .Values.kubernetesControlPlane.rules.excludedGroups ) }}
   - name: kube-apiserver-availability.rules
     rules:
     - expr: |
@@ -1001,6 +1020,8 @@ spec:
     - expr: |
         sum by (cluster, code, verb) (increase(apiserver_request_total{job="apiserver",verb=~"LIST|GET|POST|PUT|PATCH|DELETE",code=~"5.."}[1h]))
       record: code_verb:apiserver_request_total:increase1h
+  {{- end }}
+  {{- if not ( has "kube-apiserver-burnrate.rules" .Values.kubernetesControlPlane.rules.excludedGroups ) }}
   - name: kube-apiserver-burnrate.rules
     rules:
     - expr: |
@@ -1304,6 +1325,8 @@ spec:
       labels:
         verb: write
       record: apiserver_request:burnrate6h
+  {{- end }}
+  {{- if not ( has "kube-apiserver-histogram.rules" .Values.kubernetesControlPlane.rules.excludedGroups ) }}
   - name: kube-apiserver-histogram.rules
     rules:
     - expr: |
@@ -1318,6 +1341,8 @@ spec:
         quantile: '0.99'
         verb: write
       record: cluster_quantile:apiserver_request_sli_duration_seconds:histogram_quantile
+  {{- end }}
+  {{- if not ( has "k8s.rules.container_cpu_usage_seconds_total" .Values.kubernetesControlPlane.rules.excludedGroups ) }}
   - name: k8s.rules.container_cpu_usage_seconds_total
     rules:
     - expr: |
@@ -1327,6 +1352,8 @@ spec:
           1, max by(cluster, namespace, pod, node) (kube_pod_info{node!=""})
         )
       record: node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate
+  {{- end }}
+  {{- if not ( has "k8s.rules.container_memory_working_set_bytes" .Values.kubernetesControlPlane.rules.excludedGroups ) }}
   - name: k8s.rules.container_memory_working_set_bytes
     rules:
     - expr: |
@@ -1335,6 +1362,8 @@ spec:
           max by(cluster, namespace, pod, node) (kube_pod_info{node!=""})
         )
       record: node_namespace_pod_container:container_memory_working_set_bytes
+  {{- end }}
+  {{- if not ( has "k8s.rules.container_memory_rss" .Values.kubernetesControlPlane.rules.excludedGroups ) }}
   - name: k8s.rules.container_memory_rss
     rules:
     - expr: |
@@ -1343,6 +1372,8 @@ spec:
           max by(cluster, namespace, pod, node) (kube_pod_info{node!=""})
         )
       record: node_namespace_pod_container:container_memory_rss
+  {{- end }}
+  {{- if not ( has "k8s.rules.container_memory_cache" .Values.kubernetesControlPlane.rules.excludedGroups ) }}
   - name: k8s.rules.container_memory_cache
     rules:
     - expr: |
@@ -1351,6 +1382,8 @@ spec:
           max by(cluster, namespace, pod, node) (kube_pod_info{node!=""})
         )
       record: node_namespace_pod_container:container_memory_cache
+  {{- end }}
+  {{- if not ( has "k8s.rules.container_memory_swap" .Values.kubernetesControlPlane.rules.excludedGroups ) }}
   - name: k8s.rules.container_memory_swap
     rules:
     - expr: |
@@ -1359,6 +1392,8 @@ spec:
           max by(cluster, namespace, pod, node) (kube_pod_info{node!=""})
         )
       record: node_namespace_pod_container:container_memory_swap
+  {{- end }}
+  {{- if not ( has "k8s.rules.container_memory_requests" .Values.kubernetesControlPlane.rules.excludedGroups ) }}
   - name: k8s.rules.container_memory_requests
     rules:
     - expr: |
@@ -1378,6 +1413,8 @@ spec:
             )
         )
       record: namespace_memory:kube_pod_container_resource_requests:sum
+  {{- end }}
+  {{- if not ( has "k8s.rules.container_cpu_requests" .Values.kubernetesControlPlane.rules.excludedGroups ) }}
   - name: k8s.rules.container_cpu_requests
     rules:
     - expr: |
@@ -1397,6 +1434,8 @@ spec:
             )
         )
       record: namespace_cpu:kube_pod_container_resource_requests:sum
+  {{- end }}
+  {{- if not ( has "k8s.rules.container_memory_limits" .Values.kubernetesControlPlane.rules.excludedGroups ) }}
   - name: k8s.rules.container_memory_limits
     rules:
     - expr: |
@@ -1416,6 +1455,8 @@ spec:
             )
         )
       record: namespace_memory:kube_pod_container_resource_limits:sum
+  {{- end }}
+  {{- if not ( has "k8s.rules.container_cpu_limits" .Values.kubernetesControlPlane.rules.excludedGroups ) }}
   - name: k8s.rules.container_cpu_limits
     rules:
     - expr: |
@@ -1435,6 +1476,8 @@ spec:
             )
         )
       record: namespace_cpu:kube_pod_container_resource_limits:sum
+  {{- end }}
+  {{- if not ( has "k8s.rules.pod_owner" .Values.kubernetesControlPlane.rules.excludedGroups ) }}
   - name: k8s.rules.pod_owner
     rules:
     - expr: |
@@ -1484,6 +1527,8 @@ spec:
       labels:
         workload_type: job
       record: namespace_workload_pod:kube_pod_owner:relabel
+  {{- end }}
+  {{- if not ( has "kube-scheduler.rules" .Values.kubernetesControlPlane.rules.excludedGroups ) }}
   - name: kube-scheduler.rules
     rules:
     - expr: |
@@ -1531,6 +1576,8 @@ spec:
       labels:
         quantile: '0.5'
       record: cluster_quantile:scheduler_binding_duration_seconds:histogram_quantile
+  {{- end }}
+  {{- if not ( has "node.rules" .Values.kubernetesControlPlane.rules.excludedGroups ) }}
   - name: node.rules
     rules:
     - expr: |
@@ -1569,6 +1616,8 @@ spec:
           node:node_cpu_utilization:ratio_rate5m
         )
       record: cluster:node_cpu:ratio_rate5m
+  {{- end }}
+  {{- if not ( has "kubelet.rules" .Values.kubernetesControlPlane.rules.excludedGroups ) }}
   - name: kubelet.rules
     rules:
     - expr: |
@@ -1586,4 +1635,5 @@ spec:
       labels:
         quantile: '0.5'
       record: node_quantile:kubelet_pleg_relist_duration_seconds:histogram_quantile
+  {{- end }}
 {{- end }}
