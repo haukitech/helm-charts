@@ -18,6 +18,7 @@ metadata:
 spec:
   groups:
 {%- for group in groups %}
+  {{ '{{' }}- if not ( has "{{ group.name }}" {{ values_prefix }}.rules.excludedGroups ) {{ '}}' }}
   - name: {{ group.name }}
     rules:
 {%- for rule in group.rules  %}
@@ -29,5 +30,6 @@ spec:
     {{ '{{' }}- end {{ '}}' }}
 {%- endif %}
 {%- endfor %}
+  {{ '{{' }}- end {{ '}}' }}
 {%- endfor %}
 {{ '{{' }}- end {{ '}}' }}
