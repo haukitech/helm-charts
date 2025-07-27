@@ -35,6 +35,8 @@ service:
 
 spec:
   externalUrl: ""
+  secrets: []
+  configMaps: []
 
 config:
   global:
@@ -58,3 +60,5 @@ rules:
   excluded: []
   #  - "RuleName1"
   #  - "RuleName2"
+
+extraObjects: []

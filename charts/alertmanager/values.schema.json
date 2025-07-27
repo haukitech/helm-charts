@@ -92,6 +92,18 @@
       "properties": {
         "externalUrl": {
           "type": "string"
+        },
+        "secrets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "configMaps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -126,6 +138,12 @@
             "type": "string"
           }
         }
+      }
+    },
+    "extraObjects": {
+      "type": "array",
+      "items": {
+        "type": "object"
       }
     }
   },

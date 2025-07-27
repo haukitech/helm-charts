@@ -1,3 +1,7 @@
+{{/*
+Copyright 2025 Hauki Tech sp. z o.o.
+SPDX-License-Identifier: Apache-2.0
+"*/}}
 apiVersion: monitoring.coreos.com/v1
 kind: Alertmanager
 metadata:
@@ -36,4 +40,12 @@ spec:
   {{/* Alertmanager config */}}
   {{- if .Values.spec.externalUrl }}
   externalUrl: {{ .Values.spec.externalUrl | quote }}
+  {{- end }}
+  {{- with .Values.spec.configMaps }}
+  configMaps:
+  {{ toYaml . | nindent 4}}
+  {{- end }}
+  {{- with .Values.spec.secrets }}
+  secrets:
+  {{ toYaml . | nindent 4}}
   {{- end }}
