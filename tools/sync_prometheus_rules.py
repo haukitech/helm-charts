@@ -123,6 +123,12 @@ MANIFEST_SPECS = [
                 label_value="kube-scheduler",
             ),
             RuleLabel(
+                "kube_apiserver_job",
+                'include "monitoring-stack.kube-apiserver.name" .',
+                label_name="job",
+                label_value="apiserver",
+            ),
+            RuleLabel(
                 "kube_state_metrics_job",
                 'include "monitoring-stack.kube-state-metrics.fullname" .',
                 label_name="job",
