@@ -72,7 +72,7 @@ spec:
     tlsConfig:
       caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
       serverName: kubernetes
-  jobLabel: app.kubernetes.io/name
+  jobLabel: component
   namespaceSelector:
     matchNames:
     - default
