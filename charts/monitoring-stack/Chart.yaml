@@ -6,7 +6,7 @@ version: 0.1.10
 
 dependencies:
   - name: prometheus-operator
-    version: 0.1.3
+    version: 0.1.4
     repository: https://haukitech.github.io/helm-charts/
     condition: dependencies.prometheusOperator
 
